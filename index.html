@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nexo Abasto · Inventario, ventas y distribución</title>
+<style>
+:root{--bg:#f4f1ea;--pn:#fff;--tx:#1f2a24;--mu:#7b8379;--bd:#e7e2d6;--ac:#1f5f4a;--ac2:#e9f2ee;--or:#e8962c;--rd:#c0392b;--ok:#2f8f5b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.45 "Segoe UI",system-ui,-apple-system,sans-serif}
+.app{display:flex;min-height:100vh}
+aside{width:236px;background:#fbf9f4;border-right:1px solid var(--bd);padding:20px 14px;display:flex;flex-direction:column;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;margin-bottom:22px}.logo{width:38px;height:38px;border-radius:11px;background:var(--ac);color:#fff;display:grid;place-items:center;font-weight:800;font-size:18px}
+.brand b{display:block}.brand small{color:var(--mu);font-size:12px}
+.nv{display:flex;align-items:center;gap:10px;width:100%;border:0;background:none;padding:10px 12px;border-radius:10px;color:#44503f;font:inherit;cursor:pointer;margin-bottom:3px;text-align:left}
+.nv:hover{background:#efebe0}.nv.on{background:var(--ac);color:#fff;font-weight:600}.nv svg{width:17px;height:17px;flex:none}
+.bd{margin-left:auto;background:#fde4d0;color:#b4561a;border-radius:99px;font-size:11px;font-weight:700;padding:1px 8px}
+.foot{margin-top:auto;border-top:1px solid var(--bd);padding-top:12px;font-size:12px;color:var(--mu)}
+.foot button{background:none;border:0;color:var(--mu);cursor:pointer;text-decoration:underline;font:inherit;padding:0;margin-top:6px}
+.us{display:flex;gap:9px;align-items:center;margin-top:10px;color:var(--tx)}.av{width:30px;height:30px;border-radius:50%;background:#cfe6dc;color:var(--ac);display:grid;place-items:center;font-weight:700;font-size:12px}
+main{flex:1;padding:26px 30px;min-width:0}
+.hd{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;margin-bottom:20px;flex-wrap:wrap}
+h1{font-size:25px;margin:0 0 3px;letter-spacing:-.4px}.sub{color:var(--mu);max-width:520px}
+.b{border:1px solid var(--bd);background:#fff;border-radius:99px;padding:9px 16px;font:inherit;font-weight:600;cursor:pointer;color:var(--tx)}
+.b:hover{border-color:#cfc8b6}.b.p{background:var(--ac);color:#fff;border-color:var(--ac)}.b.p:hover{background:#18503d}.b.d{color:var(--rd)}.b[disabled]{opacity:.45;cursor:not-allowed}
+.kp{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:14px;margin-bottom:20px}
+.k{background:var(--pn);border:1px solid var(--bd);border-radius:14px;padding:16px 18px}.k small{color:var(--mu)}.k b{display:block;font-size:26px;margin:2px 0;letter-spacing:-.5px}.k span{color:var(--mu);font-size:12px}
+.tabs{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.tb{border:0;background:#ebe6d9;border-radius:99px;padding:8px 15px;font:inherit;font-weight:600;font-size:13px;cursor:pointer;color:#55604f}.tb.on{background:#1f2a24;color:#fff}
+.ch{border:0;background:#efe9db;border-radius:99px;padding:5px 12px;font:inherit;font-size:12px;cursor:pointer;color:#5c6657}.ch.on{background:var(--ac2);color:var(--ac);font-weight:700;box-shadow:inset 0 0 0 1px var(--ac)}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.sr{display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--bd);border-radius:99px;padding:7px 14px;min-width:240px}.sr svg{width:15px;color:var(--mu)}.sr input{border:0;outline:0;font:inherit;flex:1;background:none}
+select,input,.fi{font:inherit;color:var(--tx)}
+.cols{display:grid;grid-template-columns:1fr 310px;gap:16px;align-items:start}@media(max-width:1100px){.cols{grid-template-columns:1fr}}
+.pn{background:var(--pn);border:1px solid var(--bd);border-radius:14px;overflow:hidden}.pad{padding:18px}
+table{width:100%;border-collapse:collapse}th{font-size:11px;color:var(--mu);text-align:left;padding:11px 14px;font-weight:600;text-transform:uppercase;letter-spacing:.4px;border-bottom:1px solid var(--bd);background:#fcfbf8}
+td{padding:12px 14px;border-bottom:1px solid #f0ebdf;vertical-align:middle}tr:last-child td{border-bottom:0}tbody tr.cl{cursor:pointer}tbody tr.cl:hover{background:#faf8f2}tr.sel{background:#fbefe6!important}
+.sk{font-family:Consolas,monospace;font-size:12px;color:#7a3b22}.s2{color:var(--mu);font-size:12px}.r{text-align:right}
+.tg{display:inline-flex;align-items:center;gap:5px;border-radius:99px;padding:3px 10px;font-size:11.5px;font-weight:700}.tg:before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+.g{background:#d9f0e2;color:#1e7a49}.y{background:#fdecc8;color:#a46a00}.rr{background:#fbd9d4;color:#b0301f}.n{background:#e6e8e4;color:#5b645a}
+.cd{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:14px;margin-bottom:16px}
+.lc{background:#fff;border:1px solid var(--bd);border-radius:14px;padding:16px;cursor:pointer}.lc:hover{border-color:#bfd6cb}.lc.on{border-color:var(--ac);box-shadow:0 0 0 2px var(--ac2)}
+.lc b{font-size:15px}.lc .big{font-size:26px;font-weight:700;margin:8px 0 0}
+.bx{background:#f6f3ea;border-radius:12px;padding:12px 14px}.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.ul{border:1px solid var(--bd);border-radius:10px}.ul div{display:flex;justify-content:space-between;padding:8px 12px;border-bottom:1px solid #f0ebdf}.ul div:last-child{border:0}
+h3{margin:14px 0 8px;font-size:13px}.mv{background:#f6f3ea;border-radius:10px;padding:9px 12px;margin-bottom:7px;font-size:12.5px}
+.mod{position:fixed;inset:0;background:#1f2a2499;display:none;place-items:center;z-index:9;padding:16px}.mod.on{display:grid}
+.md{background:#fff;border-radius:16px;padding:24px;width:420px;max-width:100%;max-height:92vh;overflow:auto}.md h2{margin:0 0 12px;font-size:19px}
+label{display:block;font-size:12px;color:var(--mu);margin:11px 0 4px;font-weight:600}.fi{width:100%;padding:10px 12px;border:1px solid var(--bd);border-radius:10px;background:#fcfbf8}.fi:focus{outline:2px solid var(--ac2);border-color:var(--ac)}
+.ac{display:flex;gap:8px;justify-content:flex-end;margin-top:18px}
+#ts{position:fixed;right:20px;bottom:20px;color:#fff;padding:12px 18px;border-radius:12px;font-weight:600;display:none;max-width:360px;z-index:20;box-shadow:0 8px 24px #0003}
+.em{padding:34px;text-align:center;color:var(--mu)}.nd{fill:#fff;stroke:#1f5f4a;stroke-width:2}.nd.w{fill:#e9f2ee}.nd.h{fill:#e8962c;stroke:#b86d12}
+@media(max-width:800px){.app{flex-direction:column}aside{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap;gap:4px}.brand,.foot{display:none}main{padding:18px}}
+</style>
+</head>
+<body>
+<div class="app"><aside><div class="brand"><div class="logo">N</div><div><b>Nexo Abasto</b><small>Inventario, ventas y distribución</small></div></div><nav id="nav"></nav>
+<div class="foot"><span id="fs"></span><div class="us"><div class="av">AD</div><div>Administración<br><span>Encargado general</span></div></div><button onclick="reset()">Restablecer datos de ejemplo</button></div></aside>
+<main id="v"></main></div>
+<div class="mod" id="mod"><div class="md" id="md"></div></div><div id="ts"></div>
+<script>
+// ===== Estructuras de datos (mismos temas del .py): BST, grafo, cola FIFO, pila LIFO =====
+class Nodo{constructor(c){this.codigo=c;this.izq=null;this.der=null}}
+class Catalogo{constructor(){this.raiz=null}
+ insertar(c){this.raiz?this._i(this.raiz,c):this.raiz=new Nodo(c)}
+ _i(n,c){if(c<n.codigo){n.izq?this._i(n.izq,c):n.izq=new Nodo(c)}else if(c>n.codigo){n.der?this._i(n.der,c):n.der=new Nodo(c)}}
+ buscar(n,c){if(!n||n.codigo==c)return n;return c<n.codigo?this.buscar(n.izq,c):this.buscar(n.der,c)}
+ inorden(n){return n?[...this.inorden(n.izq),n.codigo,...this.inorden(n.der)]:[]}}
+const BOD=["Bodega Central","Bodega Regional"],SUC=["Sucursal Norte","Sucursal Sur","Sucursal Este","Sucursal Oeste"],UB=[...BOD,...SUC];
+const RED={"Bodega Central":["Bodega Regional","Sucursal Norte","Sucursal Sur","Sucursal Este"],"Bodega Regional":["Bodega Central","Sucursal Oeste"],"Sucursal Norte":["Bodega Central","Sucursal Oeste"],"Sucursal Sur":["Bodega Central","Sucursal Oeste"],"Sucursal Este":["Bodega Central","Sucursal Oeste"],"Sucursal Oeste":["Bodega Regional","Sucursal Norte","Sucursal Sur","Sucursal Este"]};
+function ruta(o,d,v=[]){if(!(o in RED)||!(d in RED))return[];if(o==d)return[o];v=[...v,o];for(const s of RED[o])if(!v.includes(s)){const r=ruta(s,d,v);if(r.length)return[o,...r]}return[]}
+const seed=()=>{const m=45,P={1001:{nombre:"Arroz 1 kg",categoria:"Granos",precio:1.25,proveedor:"Distribuidora Central",minimo:m},1002:{nombre:"Leche 1 L",categoria:"Lácteos",precio:1.10,proveedor:"Lácteos La Vaquita",minimo:m},1003:{nombre:"Huevos (docena)",categoria:"Refrigerados",precio:2.40,proveedor:"Granja El Sol",minimo:m},1004:{nombre:"Aceite 750 ml",categoria:"Despensa",precio:2.15,proveedor:"Distribuidora Central",minimo:m},1005:{nombre:"Frijoles 1 kg",categoria:"Granos",precio:1.60,proveedor:"Granos del Valle",minimo:m}};
+ return{P,X:{"Bodega Central":{1001:30,1002:24,1003:18,1004:20,1005:28},"Bodega Regional":{1001:15,1002:12,1003:10,1004:14,1005:16},"Sucursal Norte":{1001:8,1002:5,1003:4,1004:6,1005:7},"Sucursal Sur":{1001:6,1002:4,1003:5,1004:3,1005:8},"Sucursal Este":{1001:5,1002:6,1003:3,1004:4,1005:5},"Sucursal Oeste":{1001:4,1002:3,1003:2,1004:5,1005:4}},
+ provs:["Distribuidora Central","Lácteos La Vaquita","Granja El Sol","Granos del Valle"],ventas:[],pedidos:[],hist:[],pila:[],movs:[],nv:1000}};
+const KEY="nexoabasto_datos";let S,cat;
+function load(){try{S=JSON.parse(localStorage.getItem(KEY))}catch(e){S=null}if(!S||!S.P)S=seed();cat=new Catalogo();Object.keys(S.P).forEach(c=>cat.insertar(+c))}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));$("#fs").textContent="● Datos guardados en este navegador"}catch(e){$("#fs").textContent="No se pudo guardar"}}
+function reset(){if(confirm("¿Volver a los datos de ejemplo? Se borrará lo que hayas agregado.")){localStorage.removeItem(KEY);load();save();tab="cat";sel=null;render()}}
+// ===== Utilidades =====
+const $=s=>document.querySelector(s),esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const IC={box:"M21 8l-9-5-9 5v8l9 5 9-5V8zM3 8l9 5 9-5M12 13v8",store:"M3 9l1-5h16l1 5M4 9v11h16V9M9 20v-6h6v6",users:"M17 21v-2a4 4 0 00-4-4H7a4 4 0 00-4 4v2M10 11a4 4 0 100-8 4 4 0 000 8M21 21v-2a4 4 0 00-3-3.9M16 3.1a4 4 0 010 7.8",truck:"M1 4h13v12H1zM14 8h4l3 3v5h-7M5.5 20a2 2 0 100-4 2 2 0 000 4M17.5 20a2 2 0 100-4 2 2 0 000 4",route:"M6 19a2 2 0 100-4 2 2 0 000 4M18 9a2 2 0 100-4 2 2 0 000 4M8 17h6a3 3 0 000-6h-4a3 3 0 010-6h6",list:"M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01",search:"M11 19a8 8 0 100-16 8 8 0 000 16M21 21l-4.3-4.3"};
+const ic=n=>`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${IC[n]}"/></svg>`;
+const money=n=>"$"+Number(n).toFixed(2),tot=c=>UB.reduce((a,u)=>a+(S.X[u][c]||0),0),totU=u=>Object.values(S.X[u]).reduce((a,b)=>a+b,0);
+const ahora=()=>new Date().toLocaleString("es-SV",{dateStyle:"short",timeStyle:"short"});
+const mv=(tipo,texto,codigo,cant,ub)=>S.movs.push({f:ahora(),tipo,texto,codigo,cant,ub});
+const est=(q,min)=>q<=0?["Agotado","rr"]:q<=min?["Stock bajo","y"]:["Disponible","g"];
+const MIN_SEDE=4;
+function toast(m,ok){const t=$("#ts");t.textContent=m;t.style.background=ok?"#2f8f5b":"#c0392b";t.style.display="block";clearTimeout(t.h);t.h=setTimeout(()=>t.style.display="none",3600)}
+const nn=x=>{const n=Number(x);if(x===""||x==null||isNaN(n))throw"Código, precio y cantidad deben ser valores numéricos.";return n};
+// ===== Operaciones del negocio =====
+const OPS={
+producto(d){const c=nn(d.codigo),pr=nn(d.precio),q=nn(d.cantidad),mi=nn(d.minimo),nom=d.nombre.trim(),ct=d.categoria.trim(),pv=d.proveedor.trim();
+ if(c in S.P||!nom||!ct||!pv)return[0,"Código repetido o información obligatoria vacía."];if(pr<=0||q<0||mi<0)return[0,"El precio debe ser positivo y el stock no puede ser negativo."];
+ S.P[c]={nombre:nom,categoria:ct,precio:pr,proveedor:pv,minimo:mi};for(const u of UB)S.X[u][c]=0;S.X["Bodega Central"][c]=q;if(!S.provs.includes(pv))S.provs.push(pv);cat.insertar(c);sel=c;
+ mv("Producto",`Producto agregado: ${nom} (${ct})`,c,q,"Bodega Central");return[1,"Producto registrado en el catálogo."]},
+entrada(d){const c=nn(d.codigo),q=nn(d.cantidad);if(!BOD.includes(d.ub)||!(c in S.P)||q<=0)return[0,"Bodega, producto o cantidad inválidos."];
+ S.X[d.ub][c]+=q;mv("Entrada",`Entrada de ${q} u. de ${S.P[c].nombre} en ${d.ub}`,c,q,d.ub);return[1,`Entrada registrada en ${d.ub}.`]},
+salida(d){const c=nn(d.codigo),q=nn(d.cantidad);if(!(d.ub in S.X)||!(c in S.P)||q<=0)return[0,"Ubicación, producto o cantidad inválidos."];if((S.X[d.ub][c]||0)<q)return[0,`Stock insuficiente en ${d.ub}.`];
+ S.X[d.ub][c]-=q;mv("Salida",`Salida de ${q} u. de ${S.P[c].nombre} en ${d.ub}${d.motivo?" ("+esc(d.motivo)+")":""}`,c,-q,d.ub);return[1,"Salida registrada."]},
+transferir(d){const c=nn(d.codigo),q=nn(d.cantidad),o=d.origen,de=d.destino;if(o==de)return[0,"Indica dos ubicaciones válidas y diferentes."];if(!(c in S.P)||q<=0)return[0,"Producto o cantidad inválidos."];
+ if((S.X[o][c]||0)<q)return[0,"No hay suficiente existencia en el origen."];S.X[o][c]-=q;S.X[de][c]+=q;mv("Transferencia",`Transferencia de ${q} u. de ${S.P[c].nombre}: ${o} → ${de}`,c,q,de);return[1,"Transferencia registrada."]},
+venta(d){const c=nn(d.codigo),q=nn(d.cantidad),cl=d.cliente.trim(),s=d.sucursal;if(!cl||!SUC.includes(s)||!cat.buscar(cat.raiz,c))return[0,"Cliente, sucursal o producto no válido."];
+ if(q<=0||(S.X[s][c]||0)<q)return[0,`Cantidad inválida o stock insuficiente en ${s}.`];const t=q*S.P[c].precio,id="V-"+(++S.nv);
+ S.ventas.push({id,f:ahora(),cliente:cl,sucursal:s,codigo:c,cantidad:q,total:t});S.pila.push(id);S.X[s][c]-=q;mv("Venta",`Venta ${id} en ${s}: ${q} ${S.P[c].nombre} a ${esc(cl)}`,c,-q,s);return[1,`Venta registrada. Total: ${money(t)}`]},
+pedido(d){const c=nn(d.codigo),q=nn(d.cantidad);if(!SUC.includes(d.sucursal))return[0,"La sucursal no existe."];if(!(c in S.P)||q<=0)return[0,"Producto o cantidad inválidos."];
+ const p={numero:S.hist.length+1,f:ahora(),sucursal:d.sucursal,codigo:c,cantidad:q,estado:"Pendiente"};S.hist.push(p);S.pedidos.push(p.numero);mv("Pedido",`Pedido #${p.numero} recibido para ${p.sucursal}`,c,q,p.sucursal);return[1,`Pedido agregado. Pendientes: ${S.pedidos.length}`]},
+despachar(d){if(!S.pedidos.length)return[0,"No hay pedidos pendientes."];const p=S.hist[S.pedidos[0]-1],b=d.ub;if(!BOD.includes(b))return[0,"La ubicación de origen debe ser una bodega."];
+ if((S.X[b][p.codigo]||0)<p.cantidad)return[0,`Stock insuficiente en ${b}; el pedido conserva su turno.`];const r=ruta(b,p.sucursal);S.pedidos.shift();p.estado="Despachado";
+ S.X[b][p.codigo]-=p.cantidad;S.X[p.sucursal][p.codigo]+=p.cantidad;mv("Despacho",`Despacho #${p.numero} desde ${b}: ${r.join(" → ")}`,p.codigo,p.cantidad,p.sucursal);return[1,`Despachado: ${r.join(" → ")}`]},
+anular(){if(!S.pila.length)return[0,"No hay ventas para anular."];const id=S.pila.pop(),i=S.ventas.findIndex(v=>v.id==id),v=S.ventas[i];S.ventas.splice(i,1);S.X[v.sucursal][v.codigo]+=v.cantidad;mv("Venta",`Se anuló la venta ${id}`,v.codigo,v.cantidad,v.sucursal);return[1,"Última venta anulada y stock restaurado."]}};
+function run(op,d){let r;try{r=OPS[op](d||{})}catch(e){r=[0,String(e)]}if(r[0]){save();cerrar();render()}toast(r[1],r[0])}
+// ===== Ventanas emergentes =====
+const PO=()=>cat.inorden(cat.raiz).map(c=>[c,`${c} · ${S.P[c].nombre}`]),UO=a=>a.map(u=>[u,u]);
+function modal(titulo,campos,op,boton="Guardar"){const f=campos.map(([n,l,t,o,v])=>`<label>${l}</label>`+(t=="select"?`<select class="fi" name="${n}">${o.map(([a,b])=>`<option value="${esc(a)}" ${a==v?"selected":""}>${esc(b)}</option>`).join("")}</select>`:`<input class="fi" name="${n}" type="${t}" value="${v??""}" ${t=="number"?'step="any"':""} ${n=="motivo"?"":"required"}>`)).join("");
+ $("#md").innerHTML=`<h2>${titulo}</h2><form onsubmit="event.preventDefault();run('${op}',Object.fromEntries(new FormData(this)))">${f}<div class="ac"><button type="button" class="b" onclick="cerrar()">Cancelar</button><button class="b p">${boton}</button></div></form>`;$("#mod").classList.add("on")}
+const cerrar=()=>$("#mod").classList.remove("on");
+const mProd=()=>modal("Nuevo producto",[["codigo","Código (SKU)","number"],["nombre","Nombre del producto","text"],["categoria","Categoría","text"],["proveedor","Proveedor","text"],["precio","Precio ($)","number"],["cantidad","Existencias iniciales (Bodega Central)","number",0,0],["minimo","Stock mínimo","number",0,20]],"producto","Guardar producto");
+const mEnt=c=>modal("Registrar entrada",[["ub","Bodega receptora","select",UO(BOD)],["codigo","Producto","select",PO(),c],["cantidad","Cantidad recibida","number"]],"entrada","Registrar entrada");
+const mSal=c=>modal("Registrar salida",[["ub","Ubicación","select",UO(UB)],["codigo","Producto","select",PO(),c],["cantidad","Cantidad","number"],["motivo","Motivo (opcional)","text"]],"salida","Registrar salida");
+const mTra=c=>modal("Transferir existencias",[["origen","Origen","select",UO(UB)],["destino","Destino","select",UO(UB),"Sucursal Norte"],["codigo","Producto","select",PO(),c],["cantidad","Cantidad","number"]],"transferir","Transferir");
+const mMov=()=>modal("Registrar movimiento",[["t","Tipo de movimiento","select",[["e","Entrada de proveedor"],["s","Salida / ajuste"],["t","Transferencia"]]]],"x","Continuar");
+OPS.x=d=>{setTimeout(()=>({e:mEnt,s:mSal,t:mTra})[d.t](sel),0);return[0,""]};
+const mVen=()=>modal("Nueva venta",[["cliente","Cliente","text"],["sucursal","Sucursal","select",UO(SUC)],["codigo","Producto","select",PO()],["cantidad","Cantidad","number"]],"venta","Registrar venta");
+const mPed=()=>modal("Nuevo pedido de sucursal",[["sucursal","Sucursal destino","select",UO(SUC)],["codigo","Producto","select",PO()],["cantidad","Cantidad","number"]],"pedido","Crear pedido");
+const mDes=()=>{const p=S.hist[S.pedidos[0]-1];modal("Despachar siguiente pedido",[["ub","Despachar desde","select",UO(BOD)]],"despachar","Despachar");$("#md").insertAdjacentHTML("afterbegin",`<p class="s2" style="margin:0 0 6px">Sale primero el pedido más antiguo: <b>#${p.numero}</b> · ${p.cantidad} × ${esc(S.P[p.codigo].nombre)} → ${p.sucursal}</p>`)};
+// ===== Vistas =====
+let vista="inv",tab="cat",q="",fc="Todas",loc="",sel=null,lsel="Bodega Central",fm="Todos",rO="Bodega Central",rD="Sucursal Oeste";
+const NAV=[["inv","Productos e inventario","box"],["ubi","Bodegas y sucursales","store"],["ven","Clientes y ventas","users"],["ped","Pedidos y despacho","truck"],["log","Logística y rutas","route"],["seg","Seguimiento","list"]];
+const cab=(t,s,b="")=>`<div class="hd"><div><h1>${t}</h1><div class="sub">${s}</div></div><div>${b}</div></div>`;
+const kp=a=>`<div class="kp">${a.map(([t,v,s])=>`<div class="k"><small>${t}</small><b>${v}</b><span>${s}</span></div>`).join("")}</div>`;
+const tabla=(h,f,vacio="Aún no hay registros.")=>`<div class="pn" style="overflow-x:auto"><table><thead><tr>${h.map(x=>`<th>${x}</th>`).join("")}</tr></thead><tbody>${f||`<tr><td colspan="${h.length}" class="em">${vacio}</td></tr>`}</tbody></table></div>`;
+const tag=(t,c)=>`<span class="tg ${c}">${t}</span>`;
+function vInv(){const cods=cat.inorden(cat.raiz),cats=[...new Set(cods.map(c=>S.P[c].categoria))],bajos=cods.filter(c=>tot(c)<=S.P[c].minimo).length;
+ let h=cab("Productos e inventario","Catálogo maestro, categorías, proveedores, existencias por sede y movimientos.",`<button class="b" onclick="mMov()">Registrar movimiento</button> <button class="b p" onclick="mProd()">+ Nuevo producto</button>`)+
+ kp([["Productos registrados",cods.length,`En ${cats.length} categorías`],["Existencias totales",cods.reduce((a,c)=>a+tot(c),0),"Distribuidas en 6 ubicaciones"],["Requieren reposición",bajos,"Stock bajo o agotado"]])+
+ `<div class="tabs">${[["cat","Catálogo de productos"],["cp","Categorías y proveedores"],["mov","Movimientos (entradas y salidas)"]].map(([k,l])=>`<button class="tb ${tab==k?"on":""}" onclick="tab='${k}';render()">${l}</button>`).join("")}</div>`;
+ if(tab=="cp"){const rows=a=>a.map(([n,u,t])=>`<tr><td><b>${esc(n)}</b></td><td>${u}</td><td>${t}</td></tr>`).join("");
+  return h+`<div class="cols" style="grid-template-columns:1fr 1fr">${tabla(["Categoría","Productos","Unidades"],rows(cats.map(k=>[k,cods.filter(c=>S.P[c].categoria==k).length,cods.filter(c=>S.P[c].categoria==k).reduce((a,c)=>a+tot(c),0)])))}${tabla(["Proveedor","Productos","Unidades"],rows(S.provs.map(k=>[k,cods.filter(c=>S.P[c].proveedor==k).length,cods.filter(c=>S.P[c].proveedor==k).reduce((a,c)=>a+tot(c),0)])))}</div>`}
+ if(tab=="mov")return h+movTabla(S.movs.slice(-30).reverse());
+ const lista=cods.filter(c=>{const p=S.P[c];return(!q||(p.nombre+c+p.proveedor+p.categoria).toLowerCase().includes(q.toLowerCase()))&&(fc=="Todas"||p.categoria==fc)});
+ if(!sel||!(sel in S.P))sel=lista[0]||cods[0];
+ h+=`<div class="bar"><div class="sr">${ic("search")}<input id="bq" placeholder="Buscar por nombre, código o proveedor..." value="${esc(q)}" oninput="q=this.value;render(1)"></div>${["Todas",...cats].map(k=>`<button class="ch ${fc==k?"on":""}" onclick="fc='${esc(k)}';render()">${esc(k)}</button>`).join("")}</div>
+ <div class="bar"><small class="s2"><b>Ubicación:</b></small><select class="fi" style="width:auto;border-radius:99px" onchange="loc=this.value;render()"><option value="">Todas las sedes</option>${UB.map(u=>`<option ${loc==u?"selected":""}>${u}</option>`).join("")}</select><span class="s2" style="margin-left:auto">Mostrando ${lista.length} de ${cods.length} productos</span></div>
+ <div class="cols">${tabla(["Código","Producto","Precio","Existencias","Estado"],lista.map(c=>{const p=S.P[c],n=loc?S.X[loc][c]:tot(c),e=est(n,loc?MIN_SEDE:p.minimo);return`<tr class="cl ${c==sel?"sel":""}" onclick="sel=${c};render()"><td class="sk">${c}</td><td><b>${esc(p.nombre)}</b><div class="s2">${esc(p.categoria)}</div></td><td>${money(p.precio)}</td><td><b>${n} u.</b></td><td>${tag(e[0],e[1])}</td></tr>`}).join(""),"No hay productos con ese filtro.")}${detalle()}</div>`;return h}
+function detalle(){if(!sel)return"";const p=S.P[sel],e=est(tot(sel),p.minimo),ms=S.movs.filter(m=>m.codigo==sel).slice(-3).reverse();
+ return`<div class="pn pad"><div class="sk">${sel} ${tag(e[0],e[1])}</div><h2 style="margin:8px 0 2px;font-size:18px">${esc(p.nombre)}</h2><div class="s2">${esc(p.categoria)} · ${esc(p.proveedor)}</div>
+ <div class="g2"><div class="bx"><small class="s2">Precio</small><div style="font-size:20px;font-weight:700">${money(p.precio)}</div></div><div class="bx"><small class="s2">Mínimo</small><div style="font-size:20px;font-weight:700">${p.minimo} u.</div></div></div>
+ <h3>Existencias por ubicación</h3><div class="ul">${UB.map(u=>{const n=S.X[u][sel]||0;return`<div><span>${u}</span><b style="color:${n<=MIN_SEDE?"var(--rd)":"inherit"}">${n} u.</b></div>`}).join("")}</div>
+ <h3>Últimos movimientos</h3>${ms.map(m=>`<div class="mv"><b>${m.tipo}</b> · ${m.ub||""}<div class="s2">${m.f} · ${m.cant>0?"+":""}${m.cant}</div></div>`).join("")||'<div class="s2">Sin movimientos registrados.</div>'}
+ <div class="ac" style="justify-content:stretch"><button class="b p" style="flex:1" onclick="mEnt(${sel})">+ Entrada</button><button class="b" style="flex:1" onclick="mSal(${sel})">− Salida</button></div></div>`}
+const movTabla=a=>tabla(["Fecha","Tipo","Detalle","Cantidad"],a.map(m=>`<tr><td class="s2">${m.f}</td><td>${tag(m.tipo,{Entrada:"g",Salida:"rr",Venta:"y",Transferencia:"n",Despacho:"g",Pedido:"n",Producto:"n"}[m.tipo]||"n")}</td><td>${m.texto}</td><td>${m.cant>0?"+":""}${m.cant}</td></tr>`).join(""),"Aún no hay movimientos. Registra una entrada, venta o transferencia.");
+function vUbi(){const ps=Object.keys(S.P);
+ return cab("Bodegas y sucursales","Existencias por ubicación y transferencias entre bodegas y tiendas.",`<button class="b p" onclick="mTra()">⇄ Transferir producto</button>`)+
+ `<div class="cd">${UB.map(u=>{const al=ps.filter(c=>(S.X[u][c]||0)<=MIN_SEDE).length;return`<div class="lc ${u==lsel?"on":""}" onclick="lsel='${u}';render()"><small class="s2">${BOD.includes(u)?"ALMACENAMIENTO":"TIENDA"}</small><div><b>${u}</b></div><div class="big">${totU(u)} <small class="s2" style="font-size:12px;font-weight:400">unidades</small></div><div style="margin-top:6px">${al?tag(al+" con stock bajo","y"):tag("Stock saludable","g")}</div></div>`}).join("")}</div>`+
+ `<h3 style="font-size:15px">Existencias en ${lsel}</h3>`+tabla(["Código","Producto","Existencias","Estado"],cat.inorden(cat.raiz).map(c=>{const n=S.X[lsel][c]||0,e=est(n,MIN_SEDE);return`<tr><td class="sk">${c}</td><td><b>${esc(S.P[c].nombre)}</b></td><td>${n} u.</td><td>${tag(e[0],e[1])}</td></tr>`}).join(""))}
+function vVen(){const ing=S.ventas.reduce((a,v)=>a+v.total,0),cl={};S.ventas.forEach(v=>{(cl[v.cliente]=cl[v.cliente]||{n:0,t:0}).n++;cl[v.cliente].t+=v.total});
+ return cab("Clientes y ventas","Registro de ventas por sucursal. La última venta se puede anular (pila).",`<button class="b d" ${S.pila.length?"":"disabled"} onclick="run('anular')">↩ Anular última venta</button> <button class="b p" onclick="mVen()">+ Nueva venta</button>`)+
+ kp([["Ventas registradas",S.ventas.length,"Operaciones realizadas"],["Ingresos",money(ing),"Total vendido"],["Clientes",Object.keys(cl).length,"Con al menos una compra"]])+
+ `<div class="cols" style="grid-template-columns:1.6fr 1fr">${tabla(["N.º","Cliente","Sucursal","Producto","Cant.","Total"],S.ventas.slice().reverse().map(v=>`<tr><td class="sk">${v.id}</td><td>${esc(v.cliente)}<div class="s2">${v.f}</div></td><td>${v.sucursal}</td><td>${esc(S.P[v.codigo].nombre)}</td><td>${v.cantidad}</td><td><b>${money(v.total)}</b></td></tr>`).join(""),"Todavía no hay ventas. Usa «Nueva venta».")}${tabla(["Cliente","Compras","Total"],Object.entries(cl).map(([k,v])=>`<tr><td>${esc(k)}</td><td>${v.n}</td><td>${money(v.t)}</td></tr>`).join(""),"Sin clientes aún.")}</div>`}
+function vPed(){const ps=S.hist.filter(p=>p.estado=="Pendiente").length;
+ return cab("Pedidos y despacho","Los pedidos se atienden en orden de llegada (cola FIFO).",`<button class="b" ${S.pedidos.length?"":"disabled"} onclick="mDes()">Despachar siguiente</button> <button class="b p" onclick="mPed()">+ Nuevo pedido</button>`)+
+ kp([["Pendientes",ps,"En cola de atención"],["Despachados",S.hist.length-ps,"Entregados a sucursales"],["Total de pedidos",S.hist.length,"Historial completo"]])+
+ tabla(["N.º","Fecha","Sucursal","Producto","Cant.","Turno","Estado"],S.hist.slice().reverse().map(p=>{const t=S.pedidos.indexOf(p.numero)+1;return`<tr><td class="sk">#${p.numero}</td><td class="s2">${p.f}</td><td>${p.sucursal}</td><td>${esc(S.P[p.codigo].nombre)}</td><td>${p.cantidad}</td><td>${t?"Posición "+t:"—"}</td><td>${tag(p.estado,p.estado=="Pendiente"?"y":"g")}</td></tr>`}).join(""),"No hay pedidos. Crea uno con «Nuevo pedido».")}
+const POS={"Bodega Central":[80,185],"Bodega Regional":[290,60],"Sucursal Norte":[290,135],"Sucursal Sur":[290,210],"Sucursal Este":[290,285],"Sucursal Oeste":[500,185]};
+function vLog(){const r=ruta(rO,rD),en=new Set(),ed=[];Object.keys(RED).forEach(a=>RED[a].forEach(b=>{if(a<b)ed.push([a,b])}));r.forEach((x,i)=>{if(i)en.add([r[i-1],x].sort().join("|"))});
+ const so=(id,v)=>`<select class="fi" style="width:auto;border-radius:99px" onchange="${id}=this.value;render()">${UB.map(u=>`<option ${u==v?"selected":""}>${u}</option>`).join("")}</select>`;
+ return cab("Logística y rutas","Conexiones entre la central, bodegas y sucursales. Consulta rutas posibles de entrega.")+
+ `<div class="cols" style="grid-template-columns:1.5fr 1fr"><div class="pn pad"><svg viewBox="0 -28 580 368" style="width:100%;overflow:visible">${ed.map(([a,b])=>`<line x1="${POS[a][0]}" y1="${POS[a][1]}" x2="${POS[b][0]}" y2="${POS[b][1]}" stroke="${en.has(a+"|"+b)?"#e8962c":"#cfc8b6"}" stroke-width="${en.has(a+"|"+b)?4:2}"/>`).join("")}${UB.map(u=>`<circle class="nd ${BOD.includes(u)?"w":""} ${r.includes(u)?"h":""}" cx="${POS[u][0]}" cy="${POS[u][1]}" r="${BOD.includes(u)?24:19}"/><text x="${POS[u][0]}" y="${POS[u][1]+(u=="Sucursal Oeste"||u=="Bodega Central"?40:-30)}" text-anchor="middle" font-size="12" fill="#1f2a24" font-weight="600">${u}</text>`).join("")}</svg></div>
+ <div class="pn pad"><h3 style="margin-top:0">Consultar ruta</h3><label>Origen</label>${so("rO",rO)}<label>Destino</label>${so("rD",rD)}<div class="bx" style="margin-top:14px">${r.length?`<b>${r.length-1} tramo(s)</b><div style="margin-top:6px">${r.join(" → ")}</div>`:"No existe ruta."}</div><h3>Conexiones</h3><div class="ul">${Object.entries(RED).map(([k,v])=>`<div style="display:block"><b>${k}</b><div class="s2">${v.join(" · ")}</div></div>`).join("")}</div></div></div>`}
+function vSeg(){const tp=["Todos","Entrada","Salida","Transferencia","Venta","Pedido","Despacho","Producto"];
+ return cab("Seguimiento","Registro de movimientos de inventario, ventas, pedidos y despachos.")+`<div class="bar">${tp.map(k=>`<button class="ch ${fm==k?"on":""}" onclick="fm='${k}';render()">${k}</button>`).join("")}</div>`+movTabla(S.movs.filter(m=>fm=="Todos"||m.tipo==fm).slice().reverse())}
+function render(keep){$("#nav").innerHTML=NAV.map(([k,l,i])=>`<button class="nv ${vista==k?"on":""}" onclick="vista='${k}';render()">${ic(i)}${l}${k=="ped"&&S.pedidos.length?`<span class="bd">${S.pedidos.length}</span>`:""}</button>`).join("");
+ $("#v").innerHTML=({inv:vInv,ubi:vUbi,ven:vVen,ped:vPed,log:vLog,seg:vSeg})[vista]();
+ if(keep){const i=$("#bq");if(i){i.focus();i.setSelectionRange(q.length,q.length)}}}
+load();save();render();
+</script>
+</body>
+</html>
